@@ -3,63 +3,81 @@ import './App.scss';
 
 class App extends Component {
 
-  radius = 6;
-
-  componentDidMount() {
-    const currentTime = new Date();
-    this.seconds = currentTime.getSeconds() * this.radius;
-    this.minutes = currentTime.getMinutes() * this.radius + Math.floor(this.seconds / (this.radius * 10) * 10) / 10;
-    this.hours = currentTime.getHours() * this.radius * 5 + Math.floor(this.minutes / (this.radius * 2) * 10) / 10
-    this.setClockHands(this.seconds, this.minutes, this.hours);
-    console.log(this.seconds)
-    console.log(this.minutes)
-    console.log(this.hours)
-
+  constructor() {
+    super();
+    this.state = {
+      secondHandAngle: 0,
+      minuteHandAngle: 0,
+      hourHandAngle: 0
+    };
+    this.radius = 6;
+    this.startupDelay = 1;
+    this.tickCycle = this.tickCycle.bind(this);
   }
 
-  setClockHands(second, minute, hour) {
-    this.hourHand.style.transform = `rotate(${hour}deg)`;
-    this.minuteHand.style.transform = `rotate(${minute}deg)`;
-    this.secondHand.style.transform = `rotate(${second}deg)`;
+  componentDidMount() {
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours();
+    this.startClock(seconds, minutes, hours);
+  }
 
-    const interval = 1000;
-    const before = new Date();
+  startClock(seconds, minutes, hours) {
 
-    let tSecond = second;
-    let tMinute = minute;
-    let tHour = hour;
+    const secondHandAngle = (seconds + this.startupDelay) * this.radius;
+    const minuteHandAngle = minutes * this.radius +
+      Math.floor(secondHandAngle / (this.radius * 10) * 10) / 10;
+    const hourHandAngle = hours * this.radius * 5 +
+      Math.floor(minuteHandAngle / (this.radius * 2) * 10) / 10;
 
-    setInterval(() => {
-      const now = new Date();
-      const elapsedTime = now.getTime() - before.getTime();
-      const delay = Math.round(elapsedTime / interval);
+    this.setState({
+      secondHandAngle,
+      minuteHandAngle,
+      hourHandAngle,
+    });
 
-      tSecond += this.radius;
-/*       for(let i=0; i<delay; i++){
-        if( ((tSecond - i) * this.radius) % (this.radius * 5) === 0 ){
-          tMinute += 0.1;
-          if( tMinute % this.radius === 0 ){
-            tHour += 0.5;
-          }
-        }
-      } */
+    setInterval(this.tickCycle, 1000)
+  }
 
-      console.log(`${tHour}:${tMinute}:${tSecond}`);
+  tickCycle() {
 
-      this.hourHand.style.transform = `rotate(${tHour}deg)`;
-      this.minuteHand.style.transform = `rotate(${tMinute}deg)`;
-      this.secondHand.style.transform = `rotate(${tSecond}deg)`;
+    let { secondHandAngle, minuteHandAngle, hourHandAngle } = this.state;
 
-    }, interval)
+    secondHandAngle += this.radius;
+
+    if (secondHandAngle % 30 === 0) {
+      minuteHandAngle += 0.5;
+
+      if (minuteHandAngle % this.radius === 0)
+        hourHandAngle += 0.5;
+    }
+
+    this.setState({
+      secondHandAngle,
+      minuteHandAngle,
+      hourHandAngle
+    })
   }
 
   render() {
+
+    const { hourHandAngle, minuteHandAngle, secondHandAngle } = this.state;
+
     return (
       <div className="App">
         <div className="background" />
         <div className="clockContainer">
           <div className="clockContainer__child">
+
+            <div className="text title">
+              <a className="siteLink" href="http://www.stopwatch.com" target="_blank" rel="noopener noreferrer">
+                { "Stopwatch." }
+              </a>
+            </div>
+
             <div className="clock">
+
               <ul className="clock__marks">
                 <li></li>
                 <li></li>
@@ -122,12 +140,30 @@ class App extends Component {
                 <li></li>
                 <li></li>
               </ul>
+
               <div className="clock__hands">
-                <div className="clock__hand clock__hand--hour" ref={ (hour_h) => { this.hourHand = hour_h } } />
-                <div className="clock__hand clock__hand--minute" ref={ (hour_m) => { this.minuteHand = hour_m } } />
-                <div className="clock__hand clock__hand--second" ref={ (hour_s) => { this.secondHand = hour_s } } />
+                <div
+                  className="clock__hand clock__hand--hour"
+                  style={ { transform: `rotate(${hourHandAngle}deg)` } }
+                />
+                <div
+                  className="clock__hand clock__hand--minute"
+                  style={ { transform: `rotate(${minuteHandAngle}deg)` } }
+                />
+                <div
+                  className="clock__hand clock__hand--second"
+                  style={ { transform: `rotate(${secondHandAngle}deg)` } }
+                />
               </div>
+
             </div>
+
+            <div className="text subtitle">
+              <a href="http://www.stopwatch.com" target="_blank" rel="noopener noreferrer">
+                { "The clock is ticking" }
+              </a>
+            </div>
+
           </div>
         </div>
       </div>

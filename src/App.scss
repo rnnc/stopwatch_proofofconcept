@@ -5,16 +5,58 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Oxygen', sans-serif;
+  overflow: hidden;
 }
 
-.clockContainer{
-  display: table;
+.background {
+  background-image: radial-gradient(circle, #081825, #1e3250);
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+}
+
+.clockContainer {
+  display: flex;
+  justify-content: center;
   width: 100%;
   height: 100%;
   position: absolute;
-  &__child{
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
+  &__child {
+    /* display: table-cell; */
+    /* vertical-align: middle; */
+    .clock {
+      transform-origin: center;
+      transform: scale(0.85);
+      transition: box-shadow 0.25s;
+      &:hover {
+        box-shadow: 0 0 50px 2px rgb(11, 218, 156);
+        transition: box-shadow 0.25s;
+      }
+    }
+  }
+}
+
+.text,
+  {
+  font-size: 5em;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 5px 5px 15px black;
+  user-select: none;
+  cursor: pointer;
+  &.title {
+    margin-top: 7vh;
+  }
+  &.subtitle {
+    margin-top: 55vh;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline red;
+      transition: text-decoration 0.5s;
+    }
   }
 }
