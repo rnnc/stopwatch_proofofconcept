@@ -70,11 +70,6 @@ $_precision: 10;
   }
   @return $cos;
 }
-
-@function tan($angle) {
-  @return sin($angle) / cos($angle);
-}
-
 /* Clock */
 
 $clockSize: 400px;
@@ -103,18 +98,13 @@ $six_minuteMarkColor: $themeColor;
 $clockBorderColor: $themeColor;
 $clockCenterColor: transparent;
 $clockBackgroundColor: #071f368f;
-/* radial-gradient(circle, #4f6b86, #3b6083); */
 
-$clockShadow:
-/* 0px 0px 50px 5px rgba(#000, 0.5) inset ,*/
+$clockShadow: 0 0 20px 2.5px rgba(0, 255, 179, 0.541);
 
-0 0 20px 2.5px rgba(0, 255, 179, 0.541)
-/* , 0 0 50px 15px rgba(0, 0, 0, 0.329) */
-
-;
 $S: ( x: ($clockSize - $clockPadding)/2, y: ($clockSize - $clockPadding)/2);
 $A: ( x: ($clockSize - $clockPadding)/2, y: 0);
 $u: ( x: -1 * map-get($S, x), y: -1 * map-get($S, y));
+
 .clock {
   font-family: "Droid Serif", serif;
   /* display: inline-block; */

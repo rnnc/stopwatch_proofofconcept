@@ -64,6 +64,8 @@ class App extends Component {
 
     const { hourHandAngle, minuteHandAngle, secondHandAngle } = this.state;
 
+    const mainSite = "http://www.stopwatch.com";
+
     return (
       <div className="App">
         <div className="background" />
@@ -71,7 +73,7 @@ class App extends Component {
           <div className="clockContainer__child">
 
             <div className="text title">
-              <a className="siteLink" href="http://www.stopwatch.com" target="_blank" rel="noopener noreferrer">
+              <a href={ mainSite } target="_blank" rel="noopener noreferrer">
                 { "Stopwatch." }
               </a>
             </div>
@@ -159,7 +161,7 @@ class App extends Component {
             </div>
 
             <div className="text subtitle">
-              <a href="http://www.stopwatch.com" target="_blank" rel="noopener noreferrer">
+              <a href={ mainSite } target="_blank" rel="noopener noreferrer">
                 { "The clock is ticking" }
               </a>
             </div>
